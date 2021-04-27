@@ -1,7 +1,0 @@
-my_lis.c:22:6:lis2dh12_read_data_polling	56	static
-my_lis.c:68:16:platform_write	40	static
-my_lis.c:93:16:platform_read	40	static
-my_lis.c:118:13:tx_com	16	static
-my_lis.c:129:13:platform_delay	16	static
-my_lis.c:138:13:platform_init	4	static
-my_lis.c:149:6:LIS_init	24	static
