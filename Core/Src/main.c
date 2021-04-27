@@ -25,12 +25,11 @@
 #include "lis2dh12_reg.h"
 #include <string.h>
 #include <stdio.h>
-#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-#define MAIN_MENU   "press 1 to start a measurement: "
+#define MAIN_MENU   "press 1 to start a measurement\r\n "
 #define PROMPT "\r\n> "
 /* USER CODE END PTD */
 
@@ -74,7 +73,6 @@ static void tx_com(uint8_t *tx_buffer, uint16_t len);
 static void platform_delay(uint32_t ms);
 static void platform_init(void);
 uint8_t readUserInput(void);
-void LIS_init(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -90,7 +88,6 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	uint8_t opt = 0;
-	char msg[30];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -99,7 +96,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  void LIS_init(void);
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -114,6 +111,41 @@ int main(void)
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+  /* Initialize mems driver interface */
+    stmdev_ctx_t dev_ctx;
+
+    dev_ctx.write_reg = platform_write;
+    dev_ctx.read_reg = platform_read;
+    dev_ctx.handle = &SENSOR_BUS;
+
+    /* Wait boot time and initialize platform specific hardware */
+    platform_init();
+
+    /* Wait sensor boot time */
+    platform_delay(BOOT_TIME);
+
+    /* Check device ID */
+    lis2dh12_device_id_get(&dev_ctx, &whoamI);
+    if (whoamI != LIS2DH12_ID){
+      while(1) {
+        /* manage here device not found */
+      }
+    }
+
+    /* Enable Block Data Update. */
+    lis2dh12_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
+
+    /* Set Output Data Rate to 1Hz. */
+    lis2dh12_data_rate_set(&dev_ctx, LIS2DH12_ODR_5kHz376_LP_1kHz344_NM_HP);
+
+    /* Set full scale to 2g. */
+    lis2dh12_full_scale_set(&dev_ctx, LIS2DH12_16g);
+
+    /* Enable temperature sensor. */
+    lis2dh12_temperature_meas_set(&dev_ctx, LIS2DH12_TEMP_DISABLE);
+
+    /* Set device in continuous mode with 12 bit resol. */
+    lis2dh12_operating_mode_set(&dev_ctx, LIS2DH12_LP_8bit);
 
   /* USER CODE END 2 */
 
@@ -127,11 +159,7 @@ int main(void)
 	  HAL_UART_Transmit(&huart2, (uint8_t*)MAIN_MENU, strlen(MAIN_MENU), HAL_MAX_DELAY);
 	  opt = readUserInput();
 	  if(opt == 1){
-		  sprintf(msg, "%d \r\n", opt);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
 		  for(int i = 1; i < 11; ++i){
-			  sprintf(msg, "%d\t", i);
-			  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
 			  lis2dh12_read_data_polling();
 		  }
 	  }
@@ -288,7 +316,7 @@ static void MX_GPIO_Init(void)
 uint8_t readUserInput(void) {
 	char readBuf[1];
 
-	//HAL_UART_Transmit(&huart2, (uint8_t*)PROMPT, strlen(PROMPT), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, (uint8_t*)PROMPT, strlen(PROMPT), HAL_MAX_DELAY);
 	HAL_UART_Receive(&huart2, (uint8_t*)readBuf, 1, HAL_MAX_DELAY);
 	return atoi(readBuf);
 }
@@ -419,45 +447,6 @@ static void platform_init(void)
   HAL_Delay(1000);
 #endif
 }
-
-void LIS_init(void)
-  {
-  /* Initialize mems driver interface */
-    stmdev_ctx_t dev_ctx;
-
-    dev_ctx.write_reg = platform_write;
-    dev_ctx.read_reg = platform_read;
-    dev_ctx.handle = &SENSOR_BUS;
-
-    /* Wait boot time and initialize platform specific hardware */
-    platform_init();
-
-    /* Wait sensor boot time */
-    platform_delay(BOOT_TIME);
-
-    /* Check device ID */
-    lis2dh12_device_id_get(&dev_ctx, &whoamI);
-    if (whoamI != LIS2DH12_ID){
-      while(1) {
-        /* manage here device not found */
-      }
-    }
-
-    /* Enable Block Data Update. */
-    lis2dh12_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
-
-    /* Set Output Data Rate to 1Hz. */
-    lis2dh12_data_rate_set(&dev_ctx, LIS2DH12_ODR_5kHz376_LP_1kHz344_NM_HP);
-
-    /* Set full scale to 2g. */
-    lis2dh12_full_scale_set(&dev_ctx, LIS2DH12_16g);
-
-    /* Enable temperature sensor. */
-    lis2dh12_temperature_meas_set(&dev_ctx, LIS2DH12_TEMP_DISABLE);
-
-    /* Set device in continuous mode with 12 bit resol. */
-    lis2dh12_operating_mode_set(&dev_ctx, LIS2DH12_LP_8bit);
-  }
 /* USER CODE END 4 */
 
 /**
