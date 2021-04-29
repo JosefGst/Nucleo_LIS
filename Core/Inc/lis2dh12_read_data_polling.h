@@ -13,6 +13,7 @@
 extern uint8_t TxData;
 extern uint8_t RxData;
 
+void lis2dh12_Init(void);
 void lis2dh12_read_data_polling(void);
 
 

@@ -134,7 +134,7 @@ static void platform_delay(uint32_t ms);
 static void platform_init(void);
 
 /* Main Example --------------------------------------------------------------*/
-void lis2dh12_read_data_polling(void)
+void lis2dh12_Init(void)
 {
   /* Initialize mems driver interface */
   stmdev_ctx_t dev_ctx;
@@ -161,7 +161,7 @@ void lis2dh12_read_data_polling(void)
   lis2dh12_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
 
   /* Set Output Data Rate to 1Hz. */
-  lis2dh12_data_rate_set(&dev_ctx, LIS2DH12_ODR_1Hz);
+  lis2dh12_data_rate_set(&dev_ctx, LIS2DH12_ODR_400Hz);
 
   /* Set full scale to 2g. */
   lis2dh12_full_scale_set(&dev_ctx, LIS2DH12_2g);
@@ -171,7 +171,18 @@ void lis2dh12_read_data_polling(void)
 
   /* Set device in continuous mode with 12 bit resol. */
   lis2dh12_operating_mode_set(&dev_ctx, LIS2DH12_HR_12bit);
- 
+}
+
+void lis2dh12_read_data_polling(void)
+{
+  /* Initialize mems driver interface */
+  stmdev_ctx_t dev_ctx;
+
+  dev_ctx.write_reg = platform_write;
+  dev_ctx.read_reg = platform_read;
+  dev_ctx.handle = &hi2c1;
+
+
   /* Read samples in polling mode (no int) */
   while(1) {
     lis2dh12_reg_t reg;
@@ -189,14 +200,15 @@ void lis2dh12_read_data_polling(void)
       acceleration_mg[2] =
         lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[2]);
      
-      sprintf((char*)tx_buffer, "Acceleration [mg]:%4.2f\t%4.2f\t%4.2f\r\n",
-              acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
+      //sprintf((char*)tx_buffer, "Acceleration [mg]:%4.2f\t%4.2f\t%4.2f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
+      sprintf((char*)tx_buffer, "%.0f,%.0f,%.0f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
+
       tx_com(tx_buffer, strlen((char const*)tx_buffer));
     }
-   
+   /* // Read temperature data
     lis2dh12_temp_data_ready_get(&dev_ctx, &reg.byte);
     if (reg.byte) {
-      /* Read temperature data */
+
       memset(&data_raw_temperature, 0x00, sizeof(int16_t));
       lis2dh12_temperature_raw_get(&dev_ctx, &data_raw_temperature);
       temperature_degC =
@@ -207,6 +219,7 @@ void lis2dh12_read_data_polling(void)
               temperature_degC);
       tx_com(tx_buffer, strlen((char const*)tx_buffer));
     }
+  */
   }
 }
 
