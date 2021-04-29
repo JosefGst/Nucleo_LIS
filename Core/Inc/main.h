@@ -32,7 +32,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -59,7 +60,13 @@ void Error_Handler(void);
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN Private defines */
+#define WELCOME_MSG "Welcome to the Nucleo management console\r\n"
+#define MAIN_MENU   "Select the option you are interested in:\r\n\t1. Toggle LD2 LED\r\n\t2. Read USER BUTTON status\r\n\t3. Take Accelerometer Measurement\r\n\t4. Clear screen and print this message "
+#define PROMPT "\r\n> "
 
+void printWelcomeMessage(void);
+uint8_t processUserInput(uint8_t opt);
+uint8_t readUserInput(void);
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
