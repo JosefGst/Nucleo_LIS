@@ -1,0 +1,6 @@
+lis2dh12_read_data_polling.c:137:6:lis2dh12_read_data_polling	56	static
+lis2dh12_read_data_polling.c:223:16:platform_write	40	static
+lis2dh12_read_data_polling.c:257:16:platform_read	40	static
+lis2dh12_read_data_polling.c:287:13:tx_com	16	static
+lis2dh12_read_data_polling.c:304:13:platform_delay	16	static
+lis2dh12_read_data_polling.c:316:13:platform_init	4	static
