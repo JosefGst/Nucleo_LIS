@@ -27,7 +27,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- ../Core/Inc/lis2dh12_read_data_polling.h
+ D:/my\ Git\ clones/STM32/Nucleo_LIS/lis2dh12/Inc/lis2dh12_read_data_polling.h
 
 ../Core/Inc/main.h:
 
@@ -87,4 +87,4 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
 
-../Core/Inc/lis2dh12_read_data_polling.h:
+D:/my\ Git\ clones/STM32/Nucleo_LIS/lis2dh12/Inc/lis2dh12_read_data_polling.h:

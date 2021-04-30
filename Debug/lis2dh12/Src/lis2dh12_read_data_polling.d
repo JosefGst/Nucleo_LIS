@@ -1,6 +1,7 @@
-Core/Src/lis2dh12_read_data_polling.o: \
- ../Core/Src/lis2dh12_read_data_polling.c ../Core/Inc/lis2dh12_reg.h \
- ../Core/Inc/lis2dh12_read_data_polling.h \
+lis2dh12/Src/lis2dh12_read_data_polling.o: \
+ ../lis2dh12/Src/lis2dh12_read_data_polling.c \
+ D:/my\ Git\ clones/STM32/Nucleo_LIS/lis2dh12/Inc/lis2dh12_reg.h \
+ D:/my\ Git\ clones/STM32/Nucleo_LIS/lis2dh12/Inc/lis2dh12_read_data_polling.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
@@ -30,9 +31,9 @@ Core/Src/lis2dh12_read_data_polling.o: \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
 
-../Core/Inc/lis2dh12_reg.h:
+D:/my\ Git\ clones/STM32/Nucleo_LIS/lis2dh12/Inc/lis2dh12_reg.h:
 
-../Core/Inc/lis2dh12_read_data_polling.h:
+D:/my\ Git\ clones/STM32/Nucleo_LIS/lis2dh12/Inc/lis2dh12_read_data_polling.h:
 
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 
