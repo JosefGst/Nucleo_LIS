@@ -115,6 +115,7 @@ static float acceleration_mg[3];
 static float temperature_degC;
 static uint8_t whoamI;
 static uint8_t tx_buffer[1000];
+static stmdev_ctx_t dev_ctx;
 
 /* Extern variables ----------------------------------------------------------*/
 
@@ -137,8 +138,6 @@ static void platform_init(void);
 void lis2dh12_Init(void)
 {
   /* Initialize mems driver interface */
-  stmdev_ctx_t dev_ctx;
-
   dev_ctx.write_reg = platform_write;
   dev_ctx.read_reg = platform_read;
   dev_ctx.handle = &hi2c1;
@@ -175,16 +174,7 @@ void lis2dh12_Init(void)
 
 void lis2dh12_read_data_polling(void)
 {
-  /* Initialize mems driver interface */
-  stmdev_ctx_t dev_ctx;
-
-  dev_ctx.write_reg = platform_write;
-  dev_ctx.read_reg = platform_read;
-  dev_ctx.handle = &hi2c1;
-
-
   /* Read samples in polling mode (no int) */
-  while(1) {
     lis2dh12_reg_t reg;
 
     /* Read output only if new value available */
@@ -220,7 +210,7 @@ void lis2dh12_read_data_polling(void)
       tx_com(tx_buffer, strlen((char const*)tx_buffer));
     }
   */
-  }
+
 }
 
 /*

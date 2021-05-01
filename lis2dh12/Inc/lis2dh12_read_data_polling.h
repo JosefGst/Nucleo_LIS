@@ -13,6 +13,12 @@
 extern uint8_t TxData;
 extern uint8_t RxData;
 
+/*if main is cpp this needs to be commented out because the functions need to be declared in the cpp file as
+extern "C"
+{
+	void lis2dh12_Init(void);
+	void lis2dh12_read_data_polling(void);
+};*/
 void lis2dh12_Init(void);
 void lis2dh12_read_data_polling(void);
 
