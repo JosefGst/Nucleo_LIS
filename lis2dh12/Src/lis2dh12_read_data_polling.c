@@ -172,7 +172,7 @@ void lis2dh12_Init(void)
   lis2dh12_operating_mode_set(&dev_ctx, LIS2DH12_HR_12bit);
 }
 
-void lis2dh12_read_data_polling(void)
+void lis2dh12_read_data_polling(float* x, float* y, float* z)
 {
   /* Read samples in polling mode (no int) */
     lis2dh12_reg_t reg;
@@ -183,17 +183,14 @@ void lis2dh12_read_data_polling(void)
       /* Read accelerometer data */
       memset(data_raw_acceleration, 0x00, 3*sizeof(int16_t));
       lis2dh12_acceleration_raw_get(&dev_ctx, data_raw_acceleration);
-      acceleration_mg[0] =
-        lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[0]);
-      acceleration_mg[1] =
-        lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[1]);
-      acceleration_mg[2] =
-        lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[2]);
+      *x = lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[0]);
+      *y = lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[1]);
+      *z = lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[2]);
+
      
       //sprintf((char*)tx_buffer, "Acceleration [mg]:%4.2f\t%4.2f\t%4.2f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
-      sprintf((char*)tx_buffer, "%.0f,%.0f,%.0f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
-
-      tx_com(tx_buffer, strlen((char const*)tx_buffer));
+      //sprintf((char*)tx_buffer, "%.0f,%.0f,%.0f\r\n", *x, *y, *z);
+      //tx_com(tx_buffer, strlen((char const*)tx_buffer));
     }
    /* // Read temperature data
     lis2dh12_temp_data_ready_get(&dev_ctx, &reg.byte);
