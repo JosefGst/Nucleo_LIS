@@ -47,7 +47,8 @@ I2C_HandleTypeDef hi2c1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+float * p_to_data;
+int16_t test_val[3];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -103,7 +104,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  lis2dh12_read_data_polling();
+
+	  p_to_data = lis2dh12_read_data_polling();
+	  test_val[0] = *(p_to_data + 0);
+	  test_val[1] = *(p_to_data + 1);
+	  test_val[2] = *(p_to_data + 2);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

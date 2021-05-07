@@ -150,17 +150,17 @@ void lis2dh12_Init(void)
 
   /* Check device ID */
   lis2dh12_device_id_get(&dev_ctx, &whoamI);
-  if (whoamI != LIS2DH12_ID){
-    while(1) {
+  while (whoamI != LIS2DH12_ID){
+    //while(1) {
       /* manage here device not found */
-    }
+    //}
   }
 
   /* Enable Block Data Update. */
   lis2dh12_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
 
   /* Set Output Data Rate to 1Hz. */
-  lis2dh12_data_rate_set(&dev_ctx, LIS2DH12_ODR_400Hz);
+  lis2dh12_data_rate_set(&dev_ctx, LIS2DH12_ODR_100Hz);
 
   /* Set full scale to 2g. */
   lis2dh12_full_scale_set(&dev_ctx, LIS2DH12_2g);
@@ -172,7 +172,7 @@ void lis2dh12_Init(void)
   lis2dh12_operating_mode_set(&dev_ctx, LIS2DH12_HR_12bit);
 }
 
-void lis2dh12_read_data_polling(void)
+float * lis2dh12_read_data_polling(void)
 {
   /* Read samples in polling mode (no int) */
     lis2dh12_reg_t reg;
@@ -194,6 +194,7 @@ void lis2dh12_read_data_polling(void)
       sprintf((char*)tx_buffer, "%.0f,%.0f,%.0f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
 
       tx_com(tx_buffer, strlen((char const*)tx_buffer));
+      return acceleration_mg;
     }
    /* // Read temperature data
     lis2dh12_temp_data_ready_get(&dev_ctx, &reg.byte);
@@ -210,7 +211,6 @@ void lis2dh12_read_data_polling(void)
       tx_com(tx_buffer, strlen((char const*)tx_buffer));
     }
   */
-
 }
 
 /*

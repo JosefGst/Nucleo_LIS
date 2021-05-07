@@ -1,5 +1,5 @@
 lis2dh12_read_data_polling.c:138:6:lis2dh12_Init	8	static
-lis2dh12_read_data_polling.c:175:6:lis2dh12_read_data_polling	48	static
+lis2dh12_read_data_polling.c:175:9:lis2dh12_read_data_polling	48	static
 lis2dh12_read_data_polling.c:226:16:platform_write	40	static
 lis2dh12_read_data_polling.c:260:16:platform_read	40	static
 lis2dh12_read_data_polling.c:290:13:tx_com	16	static

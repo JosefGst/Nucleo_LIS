@@ -20,7 +20,7 @@ extern "C"
 	void lis2dh12_read_data_polling(void);
 };*/
 void lis2dh12_Init(void);
-void lis2dh12_read_data_polling(void);
+float * lis2dh12_read_data_polling(void);
 
 
 #endif /* INC_LIS2DH12_READ_DATA_POLLING_H_ */
