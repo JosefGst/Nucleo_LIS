@@ -48,7 +48,7 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 float * p_to_data;
-int16_t test_val[3];
+int16_t accel_val[3];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -106,9 +106,9 @@ int main(void)
   {
 
 	  p_to_data = lis2dh12_read_data_polling();
-	  test_val[0] = *(p_to_data + 0);
-	  test_val[1] = *(p_to_data + 1);
-	  test_val[2] = *(p_to_data + 2);
+	  accel_val[0] = *(p_to_data + 0);
+	  accel_val[1] = *(p_to_data + 1);
+	  accel_val[2] = *(p_to_data + 2);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -39,9 +39,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_line   0000f751  00000000  00000000  00060178  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000edddb  00000000  00000000  0006f8c9  2**0
+ 18 .debug_str    000edddc  00000000  00000000  0006f8c9  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  0015d6a4  2**0
+ 19 .comment      00000053  00000000  00000000  0015d6a5  2**0
                   CONTENTS, READONLY
  20 .debug_frame  000058b8  00000000  00000000  0015d6f8  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -1370,7 +1370,7 @@ int main(void)
  800100c:	4603      	mov	r3, r0
  800100e:	4a13      	ldr	r2, [pc, #76]	; (800105c <main+0x70>)
  8001010:	6013      	str	r3, [r2, #0]
-	  test_val[0] = *(p_to_data + 0);
+	  accel_val[0] = *(p_to_data + 0);
  8001012:	4b12      	ldr	r3, [pc, #72]	; (800105c <main+0x70>)
  8001014:	681b      	ldr	r3, [r3, #0]
  8001016:	edd3 7a00 	vldr	s15, [r3]
@@ -1379,7 +1379,7 @@ int main(void)
  8001022:	b21a      	sxth	r2, r3
  8001024:	4b0e      	ldr	r3, [pc, #56]	; (8001060 <main+0x74>)
  8001026:	801a      	strh	r2, [r3, #0]
-	  test_val[1] = *(p_to_data + 1);
+	  accel_val[1] = *(p_to_data + 1);
  8001028:	4b0c      	ldr	r3, [pc, #48]	; (800105c <main+0x70>)
  800102a:	681b      	ldr	r3, [r3, #0]
  800102c:	3304      	adds	r3, #4
@@ -1389,7 +1389,7 @@ int main(void)
  800103a:	b21a      	sxth	r2, r3
  800103c:	4b08      	ldr	r3, [pc, #32]	; (8001060 <main+0x74>)
  800103e:	805a      	strh	r2, [r3, #2]
-	  test_val[2] = *(p_to_data + 2);
+	  accel_val[2] = *(p_to_data + 2);
  8001040:	4b06      	ldr	r3, [pc, #24]	; (800105c <main+0x70>)
  8001042:	681b      	ldr	r3, [r3, #0]
  8001044:	3308      	adds	r3, #8
@@ -1402,8 +1402,8 @@ int main(void)
 	  p_to_data = lis2dh12_read_data_polling();
  8001058:	e7d6      	b.n	8001008 <main+0x1c>
  800105a:	bf00      	nop
- 800105c:	20000614 	.word	0x20000614
- 8001060:	20000664 	.word	0x20000664
+ 800105c:	2000061c 	.word	0x2000061c
+ 8001060:	20000614 	.word	0x20000614
 
 08001064 <SystemClock_Config>:
 /**
@@ -1629,7 +1629,7 @@ static void MX_I2C1_Init(void)
  80011a2:	bf00      	nop
  80011a4:	bd80      	pop	{r7, pc}
  80011a6:	bf00      	nop
- 80011a8:	20000618 	.word	0x20000618
+ 80011a8:	20000620 	.word	0x20000620
  80011ac:	40005400 	.word	0x40005400
  80011b0:	20303e5d 	.word	0x20303e5d
 
@@ -11419,7 +11419,7 @@ void lis2dh12_Init(void)
  80047c8:	20000600 	.word	0x20000600
  80047cc:	080048bd 	.word	0x080048bd
  80047d0:	080048ff 	.word	0x080048ff
- 80047d4:	20000618 	.word	0x20000618
+ 80047d4:	20000620 	.word	0x20000620
  80047d8:	20000214 	.word	0x20000214
 
 080047dc <lis2dh12_read_data_polling>:
