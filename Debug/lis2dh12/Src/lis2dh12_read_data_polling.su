@@ -1,7 +1,8 @@
-lis2dh12_read_data_polling.c:138:6:lis2dh12_Init	8	static
-lis2dh12_read_data_polling.c:175:9:lis2dh12_read_data_polling	48	static
-lis2dh12_read_data_polling.c:226:16:platform_write	40	static
-lis2dh12_read_data_polling.c:260:16:platform_read	40	static
-lis2dh12_read_data_polling.c:290:13:tx_com	16	static
-lis2dh12_read_data_polling.c:307:13:platform_delay	16	static
-lis2dh12_read_data_polling.c:319:13:platform_init	4	static
+lis2dh12_read_data_polling.c:141:6:lis2dh12_Init	8	static
+lis2dh12_read_data_polling.c:180:9:lis2dh12_read_data_polling	48	static
+lis2dh12_read_data_polling.c:234:16:platform_write	40	static
+lis2dh12_read_data_polling.c:268:16:platform_read	40	static
+lis2dh12_read_data_polling.c:298:13:tx_com	16	static
+lis2dh12_read_data_polling.c:315:13:platform_delay	16	static
+lis2dh12_read_data_polling.c:327:13:platform_init	4	static
+lis2dh12_read_data_polling.c:338:6:DMATransferComplete	16	static

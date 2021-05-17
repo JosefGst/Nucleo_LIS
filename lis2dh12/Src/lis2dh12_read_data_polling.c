@@ -103,6 +103,7 @@
 
 extern UART_HandleTypeDef huart2;
 extern I2C_HandleTypeDef hi2c1;
+extern DMA_HandleTypeDef hdma_usart2_tx;
 
 
 /* Private macro -------------------------------------------------------------*/
@@ -134,6 +135,8 @@ static void tx_com(uint8_t *tx_buffer, uint16_t len);
 static void platform_delay(uint32_t ms);
 static void platform_init(void);
 
+void DMATransferComplete(DMA_HandleTypeDef *hdma);
+
 /* Main Example --------------------------------------------------------------*/
 void lis2dh12_Init(void)
 {
@@ -144,6 +147,8 @@ void lis2dh12_Init(void)
 
   /* Wait boot time and initialize platform specific hardware */
   platform_init();
+
+  HAL_DMA_RegisterCallback(&hdma_usart2_tx, HAL_DMA_XFER_CPLT_CB_ID, &DMATransferComplete);
 
   /* Wait sensor boot time */
   platform_delay(BOOT_TIME);
@@ -160,7 +165,7 @@ void lis2dh12_Init(void)
   lis2dh12_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
 
   /* Set Output Data Rate to 1Hz. */
-  lis2dh12_data_rate_set(&dev_ctx, LIS2DH12_ODR_100Hz);
+  lis2dh12_data_rate_set(&dev_ctx, LIS2DH12_ODR_400Hz);
 
   /* Set full scale to 2g. */
   lis2dh12_full_scale_set(&dev_ctx, LIS2DH12_2g);
@@ -192,9 +197,12 @@ float * lis2dh12_read_data_polling(void)
      
       //sprintf((char*)tx_buffer, "Acceleration [mg]:%4.2f\t%4.2f\t%4.2f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
       sprintf((char*)tx_buffer, "%.0f,%.0f,%.0f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
+//
+//      tx_com(tx_buffer, strlen((char const*)tx_buffer));
 
-      tx_com(tx_buffer, strlen((char const*)tx_buffer));
-      return acceleration_mg;
+	  huart2.Instance->CR3 |= USART_CR3_DMAT;
+	  HAL_DMA_Start_IT(&hdma_usart2_tx, (uint32_t)tx_buffer, (uint32_t)&huart2.Instance->TDR, strlen((char const*)tx_buffer));
+	  return acceleration_mg;
     }
    /* // Read temperature data
     lis2dh12_temp_data_ready_get(&dev_ctx, &reg.byte);
@@ -325,4 +333,8 @@ static void platform_init(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
   HAL_Delay(1000);
 #endif
+}
+
+void DMATransferComplete(DMA_HandleTypeDef *hdma){
+	huart2.Instance->CR3 &= ~USART_CR3_DMAT;
 }
