@@ -117,20 +117,23 @@ int main(void)
   while (1)
   {
 
-	  //timer_val = __HAL_TIM_GET_COUNTER(&htim16);
+	  timer_val = __HAL_TIM_GET_COUNTER(&htim16);
+
+	  for(uint16_t i = 0; i < 100; i++){
+		  p_to_data = lis2dh12_read_data_polling();
+		  accel_val[0] = *(p_to_data + 0);
+		  accel_val[1] = *(p_to_data + 1);
+		  accel_val[2] = *(p_to_data + 2);
+	  }
 
 
-	  p_to_data = lis2dh12_read_data_polling();
-	  accel_val[0] = *(p_to_data + 0);
-	  accel_val[1] = *(p_to_data + 1);
-	  accel_val[2] = *(p_to_data + 2);
 
 
 
-
-//	  timer_val = __HAL_TIM_GET_COUNTER(&htim16) - timer_val;
-//	  sprintf(msg, "elapsed time %u\r\n", timer_val);
-//	  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+	  timer_val = __HAL_TIM_GET_COUNTER(&htim16) - timer_val;
+	  uint16_t freq = 100 * 1000 / timer_val;
+	  sprintf(msg, "freq: %u\r\n", freq);
+	  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
 
 
     /* USER CODE END WHILE */
@@ -252,7 +255,7 @@ static void MX_TIM16_Init(void)
 
   /* USER CODE END TIM16_Init 1 */
   htim16.Instance = TIM16;
-  htim16.Init.Prescaler = 0;
+  htim16.Init.Prescaler = 4000;
   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim16.Init.Period = 65535;
   htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

@@ -165,7 +165,7 @@ void lis2dh12_Init(void)
   lis2dh12_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
 
   /* Set Output Data Rate to 1Hz. */
-  lis2dh12_data_rate_set(&dev_ctx, LIS2DH12_ODR_400Hz);
+  lis2dh12_data_rate_set(&dev_ctx, LIS2DH12_ODR_200Hz);
 
   /* Set full scale to 2g. */
   lis2dh12_full_scale_set(&dev_ctx, LIS2DH12_2g);
@@ -183,27 +183,28 @@ float * lis2dh12_read_data_polling(void)
     lis2dh12_reg_t reg;
 
     /* Read output only if new value available */
-    lis2dh12_xl_data_ready_get(&dev_ctx, &reg.byte);
-    if (reg.byte) {
-      /* Read accelerometer data */
-      memset(data_raw_acceleration, 0x00, 3*sizeof(int16_t));
-      lis2dh12_acceleration_raw_get(&dev_ctx, data_raw_acceleration);
-      acceleration_mg[0] =
-        lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[0]);
-      acceleration_mg[1] =
-        lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[1]);
-      acceleration_mg[2] =
-        lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[2]);
-     
-      //sprintf((char*)tx_buffer, "Acceleration [mg]:%4.2f\t%4.2f\t%4.2f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
-      sprintf((char*)tx_buffer, "%.0f,%.0f,%.0f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
-//
-//      tx_com(tx_buffer, strlen((char const*)tx_buffer));
+    while (1){
+    	lis2dh12_xl_data_ready_get(&dev_ctx, &reg.byte);
+		if (reg.byte) {
+		  /* Read accelerometer data */
+		  memset(data_raw_acceleration, 0x00, 3*sizeof(int16_t));
+		  lis2dh12_acceleration_raw_get(&dev_ctx, data_raw_acceleration);
+		  acceleration_mg[0] =
+			lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[0]);
+		  acceleration_mg[1] =
+			lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[1]);
+		  acceleration_mg[2] =
+			lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration[2]);
 
-	  huart2.Instance->CR3 |= USART_CR3_DMAT;
-	  HAL_DMA_Start_IT(&hdma_usart2_tx, (uint32_t)tx_buffer, (uint32_t)&huart2.Instance->TDR, strlen((char const*)tx_buffer));
-	  return acceleration_mg;
-    }
+		  //sprintf((char*)tx_buffer, "Acceleration [mg]:%4.2f\t%4.2f\t%4.2f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
+		  sprintf((char*)tx_buffer, "%.0f,%.0f,%.0f\r\n", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
+	//
+	//      tx_com(tx_buffer, strlen((char const*)tx_buffer));
+
+		  huart2.Instance->CR3 |= USART_CR3_DMAT;
+		  HAL_DMA_Start_IT(&hdma_usart2_tx, (uint32_t)tx_buffer, (uint32_t)&huart2.Instance->TDR, strlen((char const*)tx_buffer));
+		  return acceleration_mg;
+		}
    /* // Read temperature data
     lis2dh12_temp_data_ready_get(&dev_ctx, &reg.byte);
     if (reg.byte) {
@@ -219,6 +220,7 @@ float * lis2dh12_read_data_polling(void)
       tx_com(tx_buffer, strlen((char const*)tx_buffer));
     }
   */
+    }
 }
 
 /*
